@@ -1,0 +1,16 @@
+name: upstream-drift
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 4 * * 1"
+permissions:
+  contents: read
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python scripts/verify_catalog.py
+      - run: python scripts/check_upstream_drift.py

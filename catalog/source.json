@@ -1,0 +1,18 @@
+{
+  "kind": "speechscope-model-source-snapshot",
+  "schema": 1,
+  "sources": [
+    {
+      "backend": "redux",
+      "license": "cc-by-4.0",
+      "repository": "moondream/parakeet-redux",
+      "revision": "2bf128600aac4b16946f7ed8372e56117fe5e23b"
+    },
+    {
+      "backend": "whispercpp",
+      "license": "mit",
+      "repository": "ggerganov/whisper.cpp",
+      "revision": "5359861c739e955e79d9a303bcbc70fb988958b1"
+    }
+  ]
+}

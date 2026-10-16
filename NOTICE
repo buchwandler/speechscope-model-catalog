@@ -1,0 +1,6 @@
+SpeechScope Model Catalog
+Copyright 2026 Holger Nahrstaedt
+
+This repository contains metadata that references third-party model artifacts.
+Each entry records the upstream license identifier. Model licenses remain the
+terms governing the referenced model artifacts.

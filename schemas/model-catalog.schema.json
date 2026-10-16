@@ -1,0 +1,234 @@
+{
+  "$defs": {
+    "artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "type": "string"
+        },
+        "path": {
+          "pattern": "^(?!/)(?!.*(?:^|/)(?:\\.|\\.\\.)(?:/|$))(?!.*//)[A-Za-z0-9._/-]+$",
+          "type": "string"
+        },
+        "primary": {
+          "type": "boolean"
+        },
+        "role": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          ]
+        },
+        "size": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "minimum": 1,
+              "type": "integer"
+            }
+          ]
+        },
+        "url": {
+          "pattern": "^https://huggingface\\.co/[^/]+/[^/]+/resolve/[0-9a-f]{40}/.+\\?download=true$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "path",
+        "filename",
+        "primary",
+        "size",
+        "sha256",
+        "url"
+      ],
+      "type": "object"
+    },
+    "model": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition": {
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "enum": [
+                "managed",
+                "runtime-managed"
+              ]
+            },
+            "reason": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "runtime_locator": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "mode"
+          ],
+          "type": "object"
+        },
+        "aliases": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "artifacts": {
+          "items": {
+            "$ref": "#/$defs/artifact"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "backend": {
+          "enum": [
+            "whispercpp",
+            "redux"
+          ]
+        },
+        "description": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "format": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "model",
+            "bundle"
+          ]
+        },
+        "languages": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "ref": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9_.-]*$",
+          "type": "string"
+        },
+        "runtime": {
+          "type": "object"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "ref",
+        "backend",
+        "id",
+        "aliases",
+        "kind",
+        "format",
+        "languages",
+        "description",
+        "acquisition",
+        "runtime",
+        "source",
+        "artifacts"
+      ],
+      "type": "object"
+    },
+    "source": {
+      "additionalProperties": false,
+      "properties": {
+        "license": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "provider": {
+          "const": "huggingface"
+        },
+        "repository": {
+          "pattern": "^[^/\\\\\\s]+/[^/\\\\\\s]+$",
+          "type": "string"
+        },
+        "revision": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "repository",
+        "revision",
+        "license"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://example.invalid/speechscope-model-catalog/schema/v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "speechscope-model-catalog"
+    },
+    "models": {
+      "additionalProperties": {
+        "$ref": "#/$defs/model"
+      },
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9_-]*:[A-Za-z0-9][A-Za-z0-9_.-]*$"
+      },
+      "type": "object"
+    },
+    "schema": {
+      "const": 1
+    },
+    "source": {
+      "additionalProperties": false,
+      "properties": {
+        "model_count": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "provider": {
+          "const": "huggingface"
+        }
+      },
+      "required": [
+        "provider",
+        "model_count"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "kind",
+    "source",
+    "models"
+  ],
+  "title": "SpeechScope ASR model catalog",
+  "type": "object"
+}
